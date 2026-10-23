@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="pt-BR" class="h-full bg-slate-900">
+<html lang="pt-BR" class="h-full dark">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
@@ -65,9 +65,9 @@
             padding-top: max(1rem, env(safe-area-inset-top));
         }
 
-        /* Custom Theme Toggle Pill Switch */
+        /* Custom Theme Toggle Switch */
         .theme-toggle-btn {
-            width: 56px;
+            width: 52px;
             height: 28px;
             border-radius: 9999px;
             position: relative;
@@ -93,14 +93,14 @@
 
     <!-- Top App Bar / Header -->
     <header class="bg-white/90 dark:bg-slate-900/90 backdrop-blur-md border-b border-slate-200 dark:border-slate-800 sticky top-0 z-30 pt-safe transition-colors duration-300">
-        <div class="max-w-4xl mx-auto px-4 h-16 flex justify-between items-center">
+        <div class="max-w-4xl mx-auto px-4 h-16 flex justify-between items-center gap-2">
             <!-- Brand -->
-            <div class="flex items-center space-x-2.5">
+            <div class="flex items-center space-x-2">
                 <div class="p-2 bg-gradient-to-tr from-emerald-500 to-teal-400 text-slate-900 rounded-xl shadow-lg shadow-emerald-500/20">
                     <i data-lucide="wallet" class="w-5 h-5"></i>
                 </div>
-                <div>
-                    <span class="text-lg font-bold bg-gradient-to-r from-emerald-600 to-teal-600 dark:from-emerald-400 dark:to-teal-400 bg-clip-text text-transparent">
+                <div class="hidden sm:block">
+                    <span class="text-base font-bold bg-gradient-to-r from-emerald-600 to-teal-600 dark:from-emerald-400 dark:to-teal-400 bg-clip-text text-transparent">
                         FinanControl
                     </span>
                     <span id="cloudStatusBadge" class="block text-[10px] text-slate-500 dark:text-slate-400 font-mono">
@@ -109,12 +109,12 @@
                 </div>
             </div>
 
-            <!-- Month Selector -->
-            <div class="flex items-center bg-slate-100 dark:bg-slate-800/80 p-1 rounded-xl border border-slate-200 dark:border-slate-700/60 shadow-inner">
+            <!-- Month Selector (Visível apenas nas Finanças) -->
+            <div id="monthSelectorContainer" class="flex items-center bg-slate-100 dark:bg-slate-800/80 p-1 rounded-xl border border-slate-200 dark:border-slate-700/60 shadow-inner">
                 <button id="prevMonthBtn" title="Mês Anterior" class="p-1.5 hover:bg-slate-200 dark:hover:bg-slate-700 rounded-lg transition-colors text-slate-600 dark:text-slate-300 active:scale-95">
                     <i data-lucide="chevron-left" class="w-4 h-4"></i>
                 </button>
-                <span id="currentMonthYear" class="px-2 text-xs font-bold text-slate-800 dark:text-slate-200 min-w-[100px] text-center capitalize">
+                <span id="currentMonthYear" class="px-2 text-xs font-bold text-slate-800 dark:text-slate-200 min-w-[90px] text-center capitalize">
                     --
                 </span>
                 <button id="nextMonthBtn" title="Próximo Mês" class="p-1.5 hover:bg-slate-200 dark:hover:bg-slate-700 rounded-lg transition-colors text-slate-600 dark:text-slate-300 active:scale-95">
@@ -122,24 +122,30 @@
                 </button>
             </div>
 
-            <!-- Right Actions: Theme Toggle + Header Action Buttons -->
+            <!-- Right Actions: Switcher + Theme Toggle -->
             <div class="flex items-center space-x-2">
-                <!-- Theme Toggle Button (Dark/Light Switch) -->
-                <button id="themeToggleBtn" onclick="toggleTheme()" title="Alternar Tema" class="theme-toggle-btn bg-amber-100 dark:bg-slate-800 border border-amber-200 dark:border-slate-700">
-                    <div id="themeToggleThumb" class="theme-toggle-thumb bg-white dark:bg-slate-900 text-amber-500 dark:text-indigo-300">
-                        <i id="themeIcon" data-lucide="sun" class="w-3.5 h-3.5"></i>
+                <!-- Switcher Finanças x Investimentos -->
+                <div class="flex bg-slate-100 dark:bg-slate-800/80 p-1 rounded-xl border border-slate-200 dark:border-slate-700/60">
+                    <button onclick="switchView('finances')" id="navFinancesBtn" title="Minhas Finanças" class="p-1.5 sm:px-3 sm:py-1 bg-emerald-500 text-slate-950 font-bold rounded-lg text-xs flex items-center space-x-1 shadow transition-all">
+                        <i data-lucide="wallet" class="w-3.5 h-3.5"></i>
+                        <span class="hidden md:inline">Finanças</span>
+                    </button>
+                    <button onclick="switchView('investments')" id="navInvestmentsBtn" title="Meus Investimentos" class="p-1.5 sm:px-3 sm:py-1 text-slate-600 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white font-semibold rounded-lg text-xs flex items-center space-x-1 transition-all">
+                        <i data-lucide="trending-up" class="w-3.5 h-3.5"></i>
+                        <span class="hidden md:inline">Investimentos</span>
+                    </button>
+                </div>
+
+                <!-- Theme Toggle Button -->
+                <button id="themeToggleBtn" onclick="toggleTheme()" title="Alternar Tema" class="theme-toggle-btn bg-slate-800 border border-slate-700">
+                    <div id="themeToggleThumb" class="theme-toggle-thumb bg-slate-900 text-indigo-300">
+                        <i id="themeIcon" data-lucide="moon" class="w-3.5 h-3.5 text-indigo-300"></i>
                     </div>
                 </button>
 
-                <div class="hidden sm:flex items-center space-x-2">
-                    <button onclick="exportToGoogleSheets()" title="Exportar CSV" class="bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-300 p-2 rounded-xl border border-slate-200 dark:border-slate-700 transition-all active:scale-95">
-                        <i data-lucide="file-spreadsheet" class="w-4 h-4"></i>
-                    </button>
-                    <button onclick="openModal()" class="bg-emerald-500 hover:bg-emerald-600 text-slate-950 font-semibold px-3 py-2 rounded-xl text-xs flex items-center space-x-1.5 shadow-lg shadow-emerald-500/20 active:scale-95 transition-all">
-                        <i data-lucide="plus" class="w-4 h-4"></i>
-                        <span>Nova Transação</span>
-                    </button>
-                </div>
+                <button onclick="promptExportConfirmation()" title="Exportar CSV" class="hidden sm:flex bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-300 p-2 rounded-xl border border-slate-200 dark:border-slate-700 transition-all active:scale-95">
+                    <i data-lucide="file-spreadsheet" class="w-4 h-4"></i>
+                </button>
             </div>
         </div>
     </header>
@@ -156,7 +162,7 @@
             <div class="flex items-center space-x-2">
                 <button onclick="copyUserId()" class="text-emerald-700 dark:text-emerald-400 hover:text-emerald-800 dark:hover:text-emerald-300 flex items-center space-x-1 font-medium bg-emerald-50 dark:bg-emerald-500/10 px-2 py-1 rounded-lg border border-emerald-200 dark:border-emerald-500/20 active:scale-95 transition-colors">
                     <i data-lucide="copy" class="w-3 h-3"></i>
-                    <span>Copiar Chave para Sincronizar</span>
+                    <span>Copiar Chave</span>
                 </button>
                 <button onclick="promptCustomUserId()" class="text-slate-500 dark:text-slate-400 hover:text-slate-800 dark:hover:text-slate-200 p-1 rounded" title="Entrar com outro ID">
                     <i data-lucide="key" class="w-3.5 h-3.5"></i>
@@ -164,132 +170,242 @@
             </div>
         </section>
 
-        <!-- KPI Balance Cards -->
-        <section class="grid grid-cols-1 sm:grid-cols-3 gap-3">
-            <!-- Saldo Atual -->
-            <div class="bg-white dark:bg-slate-800/80 p-4 rounded-2xl border border-slate-200 dark:border-slate-700/50 shadow-sm relative overflow-hidden transition-colors">
-                <div class="flex justify-between items-start">
+        <!-- VIEW 1: FINANÇAS -->
+        <div id="financesView" class="space-y-4">
+            <!-- KPI Balance Cards -->
+            <section class="grid grid-cols-1 sm:grid-cols-3 gap-3">
+                <!-- Saldo Atual -->
+                <div class="bg-white dark:bg-slate-800/80 p-4 rounded-2xl border border-slate-200 dark:border-slate-700/50 shadow-sm relative overflow-hidden transition-colors">
+                    <div class="flex justify-between items-start">
+                        <div>
+                            <p class="text-[10px] font-bold uppercase tracking-wider text-slate-500 dark:text-slate-400">Saldo Consolidado</p>
+                            <h3 id="totalBalance" class="text-xl sm:text-2xl font-extrabold text-slate-900 dark:text-white mt-1">R$ 0,00</h3>
+                        </div>
+                        <div class="p-2.5 bg-blue-50 dark:bg-blue-500/10 text-blue-600 dark:text-blue-400 rounded-xl border border-blue-200 dark:border-blue-500/20">
+                            <i data-lucide="scale" class="w-5 h-5"></i>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Total Receitas -->
+                <div class="bg-white dark:bg-slate-800/80 p-4 rounded-2xl border border-slate-200 dark:border-slate-700/50 shadow-sm relative overflow-hidden transition-colors">
+                    <div class="flex justify-between items-start">
+                        <div>
+                            <p class="text-[10px] font-bold uppercase tracking-wider text-slate-500 dark:text-slate-400">Entradas do Mês</p>
+                            <h3 id="totalIncome" class="text-xl sm:text-2xl font-extrabold text-emerald-600 dark:text-emerald-400 mt-1">R$ 0,00</h3>
+                        </div>
+                        <div class="p-2.5 bg-emerald-50 dark:bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 rounded-xl border border-emerald-200 dark:border-emerald-500/20">
+                            <i data-lucide="arrow-up-right" class="w-5 h-5"></i>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Total Despesas -->
+                <div class="bg-white dark:bg-slate-800/80 p-4 rounded-2xl border border-slate-200 dark:border-slate-700/50 shadow-sm relative overflow-hidden transition-colors">
+                    <div class="flex justify-between items-start">
+                        <div>
+                            <p class="text-[10px] font-bold uppercase tracking-wider text-slate-500 dark:text-slate-400">Saídas do Mês</p>
+                            <h3 id="totalExpense" class="text-xl sm:text-2xl font-extrabold text-rose-600 dark:text-rose-400 mt-1">R$ 0,00</h3>
+                        </div>
+                        <div class="p-2.5 bg-rose-50 dark:bg-rose-500/10 text-rose-600 dark:text-rose-400 rounded-xl border border-rose-200 dark:border-rose-500/20">
+                            <i data-lucide="arrow-down-right" class="w-5 h-5"></i>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Charts -->
+            <section class="grid grid-cols-1 lg:grid-cols-3 gap-4">
+                <div class="lg:col-span-2 bg-white dark:bg-slate-800/60 p-4 rounded-2xl border border-slate-200 dark:border-slate-800 shadow-sm transition-colors">
+                    <div class="flex justify-between items-center mb-3">
+                        <h2 class="text-sm font-bold text-slate-800 dark:text-slate-200">Evolução Mensal</h2>
+                        <span class="text-xs text-slate-500">Mês Atual</span>
+                    </div>
+                    <div class="relative h-48 sm:h-56 w-full">
+                        <canvas id="monthlyOverviewChart"></canvas>
+                    </div>
+                </div>
+
+                <div class="bg-white dark:bg-slate-800/60 p-4 rounded-2xl border border-slate-200 dark:border-slate-800 shadow-sm transition-colors">
+                    <div class="flex justify-between items-center mb-3">
+                        <h2 class="text-sm font-bold text-slate-800 dark:text-slate-200">Categorias</h2>
+                        <span class="text-xs text-slate-500">Gastos</span>
+                    </div>
+                    <div class="relative h-48 sm:h-56 w-full flex items-center justify-center">
+                        <canvas id="categoryChart"></canvas>
+                    </div>
+                </div>
+            </section>
+
+            <!-- History & Quick Filters -->
+            <section class="bg-white dark:bg-slate-800/60 rounded-2xl border border-slate-200 dark:border-slate-800 shadow-sm overflow-hidden transition-colors">
+                <div class="p-4 border-b border-slate-200 dark:border-slate-800 flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+                    <div class="flex items-center justify-between w-full sm:w-auto">
+                        <h2 class="text-sm font-bold text-slate-800 dark:text-slate-200">Histórico de Transações</h2>
+                        <button onclick="openModal()" class="sm:hidden bg-emerald-500 hover:bg-emerald-600 text-slate-950 font-bold px-3 py-1.5 rounded-xl text-xs flex items-center space-x-1 shadow-md shadow-emerald-500/20">
+                            <i data-lucide="plus" class="w-3.5 h-3.5"></i>
+                            <span>Novo</span>
+                        </button>
+                    </div>
+
+                    <div class="grid grid-cols-2 sm:flex items-center gap-2">
+                        <input type="text" id="searchInput" placeholder="Buscar..." 
+                            class="col-span-2 sm:w-36 px-3 py-1.5 bg-slate-100 dark:bg-slate-900/80 border border-slate-300 dark:border-slate-700 rounded-xl text-xs text-slate-800 dark:text-slate-200 placeholder-slate-400 focus:outline-none focus:border-emerald-500">
+
+                        <select id="typeFilter" class="bg-slate-100 dark:bg-slate-900/80 border border-slate-300 dark:border-slate-700 rounded-xl px-2.5 py-1.5 text-xs text-slate-700 dark:text-slate-300 focus:outline-none focus:border-emerald-500">
+                            <option value="all">Todos Tipos</option>
+                            <option value="income">Receitas</option>
+                            <option value="expense">Despesas</option>
+                        </select>
+
+                        <select id="categoryFilter" class="bg-slate-100 dark:bg-slate-900/80 border border-slate-300 dark:border-slate-700 rounded-xl px-2.5 py-1.5 text-xs text-slate-700 dark:text-slate-300 focus:outline-none focus:border-emerald-500">
+                            <option value="all">Todas Cat.</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div id="transactionList" class="divide-y divide-slate-100 dark:divide-slate-800/60">
+                </div>
+
+                <div id="emptyState" class="hidden py-10 text-center">
+                    <div class="w-12 h-12 bg-slate-100 dark:bg-slate-800 text-slate-400 rounded-2xl flex items-center justify-center mx-auto mb-2">
+                        <i data-lucide="receipt" class="w-6 h-6"></i>
+                    </div>
+                    <p class="text-slate-500 dark:text-slate-400 text-xs">Nenhuma movimentação registrada neste mês.</p>
+                </div>
+            </section>
+        </div>
+
+        <!-- VIEW 2: MEUS INVESTIMENTOS -->
+        <div id="investmentsView" class="hidden space-y-4">
+            <!-- Header dos Investimentos & Tabs -->
+            <div class="bg-white dark:bg-slate-800/80 p-4 rounded-2xl border border-slate-200 dark:border-slate-700/50 shadow-sm space-y-3">
+                <div class="flex items-center justify-between">
                     <div>
-                        <p class="text-[10px] font-bold uppercase tracking-wider text-slate-500 dark:text-slate-400">Saldo Consolidado</p>
-                        <h3 id="totalBalance" class="text-xl sm:text-2xl font-extrabold text-slate-900 dark:text-white mt-1">R$ 0,00</h3>
+                        <h1 class="text-base font-bold text-slate-900 dark:text-white">Meus Investimentos</h1>
+                        <p class="text-xs text-slate-500 dark:text-slate-400">Acompanhamento e alocação de ativos</p>
                     </div>
-                    <div class="p-2.5 bg-blue-50 dark:bg-blue-500/10 text-blue-600 dark:text-blue-400 rounded-xl border border-blue-200 dark:border-blue-500/20">
-                        <i data-lucide="scale" class="w-5 h-5"></i>
-                    </div>
+                    <button onclick="openAssetModal()" class="bg-emerald-500 hover:bg-emerald-600 text-slate-950 px-3.5 py-2 rounded-xl text-xs font-bold flex items-center space-x-1 shadow-md shadow-emerald-500/20 active:scale-95 transition-all">
+                        <i data-lucide="plus" class="w-4 h-4"></i>
+                        <span>Novo Ativo</span>
+                    </button>
+                </div>
+
+                <!-- Subtabs -->
+                <div class="flex space-x-6 border-b border-slate-200 dark:border-slate-700/60 pt-2 text-xs font-semibold">
+                    <button onclick="setInvestmentSubtab('geral')" id="invTabGeral" class="pb-2 text-emerald-600 dark:text-emerald-400 border-b-2 border-emerald-500 transition-colors font-bold">Visão Geral</button>
+                    <button onclick="setInvestmentSubtab('ativos')" id="invTabAtivos" class="pb-2 text-slate-400 hover:text-slate-600 dark:hover:text-slate-300 border-b-2 border-transparent transition-colors">Meus Ativos</button>
                 </div>
             </div>
 
-            <!-- Total Receitas -->
-            <div class="bg-white dark:bg-slate-800/80 p-4 rounded-2xl border border-slate-200 dark:border-slate-700/50 shadow-sm relative overflow-hidden transition-colors">
-                <div class="flex justify-between items-start">
+            <!-- SUBTAB CONTENT: GERAL -->
+            <div id="invContentGeral" class="space-y-4">
+                <!-- Card Patrimonio Total -->
+                <div class="bg-white dark:bg-slate-800/80 p-5 rounded-2xl border border-slate-200 dark:border-slate-700/50 shadow-sm relative overflow-hidden">
+                    <div class="flex justify-between items-start text-xs text-slate-500 dark:text-slate-400 font-medium">
+                        <span>Patrimônio Total Investido</span>
+                        <span class="text-emerald-600 dark:text-emerald-400 font-semibold" id="invLastUpdate">Sincronizado</span>
+                    </div>
+                    <div class="mt-2 flex items-baseline space-x-2">
+                        <span id="invTotalPatrimony" class="text-3xl font-extrabold text-slate-900 dark:text-white tracking-tight">R$ 0,00</span>
+                    </div>
+                </div>
+
+                <!-- Summary Cards -->
+                <div class="bg-white dark:bg-slate-800/80 p-4 rounded-2xl border border-slate-200 dark:border-slate-700/50 shadow-sm grid grid-cols-3 text-center divide-x divide-slate-100 dark:divide-slate-700/60">
                     <div>
-                        <p class="text-[10px] font-bold uppercase tracking-wider text-slate-500 dark:text-slate-400">Entradas do Mês</p>
-                        <h3 id="totalIncome" class="text-xl sm:text-2xl font-extrabold text-emerald-600 dark:text-emerald-400 mt-1">R$ 0,00</h3>
+                        <p id="invTotalClasses" class="text-xl font-bold text-slate-900 dark:text-white">00</p>
+                        <p class="text-[10px] text-slate-500 dark:text-slate-400 font-medium mt-0.5">Classes de Ativos</p>
                     </div>
-                    <div class="p-2.5 bg-emerald-50 dark:bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 rounded-xl border border-emerald-200 dark:border-emerald-500/20">
-                        <i data-lucide="arrow-up-right" class="w-5 h-5"></i>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Total Despesas -->
-            <div class="bg-white dark:bg-slate-800/80 p-4 rounded-2xl border border-slate-200 dark:border-slate-700/50 shadow-sm relative overflow-hidden transition-colors">
-                <div class="flex justify-between items-start">
                     <div>
-                        <p class="text-[10px] font-bold uppercase tracking-wider text-slate-500 dark:text-slate-400">Saídas do Mês</p>
-                        <h3 id="totalExpense" class="text-xl sm:text-2xl font-extrabold text-rose-600 dark:text-rose-400 mt-1">R$ 0,00</h3>
+                        <p id="invTopPosition" class="text-xl font-bold text-slate-900 dark:text-white">0,00%</p>
+                        <p class="text-[10px] text-slate-500 dark:text-slate-400 font-medium mt-0.5">Maior Posição</p>
                     </div>
-                    <div class="p-2.5 bg-rose-50 dark:bg-rose-500/10 text-rose-600 dark:text-rose-400 rounded-xl border border-rose-200 dark:border-rose-500/20">
-                        <i data-lucide="arrow-down-right" class="w-5 h-5"></i>
+                    <div>
+                        <p id="invTotalCount" class="text-xl font-bold text-slate-900 dark:text-white">00</p>
+                        <p class="text-[10px] text-slate-500 dark:text-slate-400 font-medium mt-0.5">Ativos Cadastrados</p>
+                    </div>
+                </div>
+
+                <!-- Allocation Chart -->
+                <div class="bg-white dark:bg-slate-800/80 p-5 rounded-2xl border border-slate-200 dark:border-slate-700/50 shadow-sm space-y-4">
+                    <div>
+                        <h2 class="text-sm font-bold text-slate-900 dark:text-white">Alocação da Carteira</h2>
+                        <p class="text-xs text-slate-500 dark:text-slate-400 mt-0.5">Distribuição do seu patrimônio por classe</p>
+                    </div>
+                    <div class="relative h-56 w-full flex items-center justify-center">
+                        <canvas id="portfolioDoughnutChart"></canvas>
+                    </div>
+                    <div id="portfolioLegendList" class="space-y-2.5 pt-2 border-t border-slate-100 dark:border-slate-800">
                     </div>
                 </div>
             </div>
-        </section>
 
-        <!-- Charts -->
-        <section class="grid grid-cols-1 lg:grid-cols-3 gap-4">
-            <!-- Daily Flow Bar Chart -->
-            <div class="lg:col-span-2 bg-white dark:bg-slate-800/60 p-4 rounded-2xl border border-slate-200 dark:border-slate-800 shadow-sm transition-colors">
-                <div class="flex justify-between items-center mb-3">
-                    <h2 class="text-sm font-bold text-slate-800 dark:text-slate-200">Evolução Mensal</h2>
-                    <span class="text-xs text-slate-500">Mês Atual</span>
-                </div>
-                <div class="relative h-48 sm:h-56 w-full">
-                    <canvas id="monthlyOverviewChart"></canvas>
-                </div>
-            </div>
-
-            <!-- Category Chart -->
-            <div class="bg-white dark:bg-slate-800/60 p-4 rounded-2xl border border-slate-200 dark:border-slate-800 shadow-sm transition-colors">
-                <div class="flex justify-between items-center mb-3">
-                    <h2 class="text-sm font-bold text-slate-800 dark:text-slate-200">Categorias</h2>
-                    <span class="text-xs text-slate-500">Gastos</span>
-                </div>
-                <div class="relative h-48 sm:h-56 w-full flex items-center justify-center">
-                    <canvas id="categoryChart"></canvas>
+            <!-- SUBTAB CONTENT: ATIVOS -->
+            <div id="invContentAtivos" class="hidden space-y-3">
+                <div class="bg-white dark:bg-slate-800/80 p-4 rounded-2xl border border-slate-200 dark:border-slate-700/50 shadow-sm space-y-3">
+                    <div class="flex justify-between items-center">
+                        <h3 class="text-xs font-bold uppercase text-slate-400 tracking-wider">Lista de Ativos</h3>
+                        <button onclick="openAssetModal()" class="text-xs text-emerald-500 font-bold hover:underline">+ Cadastrar Ativo</button>
+                    </div>
+                    
+                    <div id="assetsListContainer" class="space-y-2 divide-y divide-slate-100 dark:divide-slate-800">
+                    </div>
                 </div>
             </div>
-        </section>
+        </div>
 
-        <!-- History & Quick Filters -->
-        <section class="bg-white dark:bg-slate-800/60 rounded-2xl border border-slate-200 dark:border-slate-800 shadow-sm overflow-hidden transition-colors">
-            <div class="p-4 border-b border-slate-200 dark:border-slate-800 flex flex-col sm:flex-row sm:items-center justify-between gap-3">
-                <h2 class="text-sm font-bold text-slate-800 dark:text-slate-200">Histórico de Transações</h2>
-
-                <!-- Mobile Filter Controls -->
-                <div class="grid grid-cols-2 sm:flex items-center gap-2">
-                    <input type="text" id="searchInput" placeholder="Buscar..." 
-                        class="col-span-2 sm:w-36 px-3 py-1.5 bg-slate-100 dark:bg-slate-900/80 border border-slate-300 dark:border-slate-700 rounded-xl text-xs text-slate-800 dark:text-slate-200 placeholder-slate-400 dark:placeholder-slate-500 focus:outline-none focus:border-emerald-500">
-
-                    <select id="typeFilter" class="bg-slate-100 dark:bg-slate-900/80 border border-slate-300 dark:border-slate-700 rounded-xl px-2.5 py-1.5 text-xs text-slate-700 dark:text-slate-300 focus:outline-none focus:border-emerald-500">
-                        <option value="all">Todos Tipos</option>
-                        <option value="income">Receitas</option>
-                        <option value="expense">Despesas</option>
-                    </select>
-
-                    <select id="categoryFilter" class="bg-slate-100 dark:bg-slate-900/80 border border-slate-300 dark:border-slate-700 rounded-xl px-2.5 py-1.5 text-xs text-slate-700 dark:text-slate-300 focus:outline-none focus:border-emerald-500">
-                        <option value="all">Todas Cat.</option>
-                    </select>
-                </div>
-            </div>
-
-            <!-- List Container -->
-            <div id="transactionList" class="divide-y divide-slate-100 dark:divide-slate-800/60">
-                <!-- Populated dynamically -->
-            </div>
-
-            <!-- Empty State -->
-            <div id="emptyState" class="hidden py-10 text-center">
-                <div class="w-12 h-12 bg-slate-100 dark:bg-slate-800 text-slate-400 dark:text-slate-500 rounded-2xl flex items-center justify-center mx-auto mb-2">
-                    <i data-lucide="receipt" class="w-6 h-6"></i>
-                </div>
-                <p class="text-slate-500 dark:text-slate-400 text-xs">Nenhuma movimentação registrada.</p>
-            </div>
-        </section>
     </main>
 
     <!-- Mobile Navigation Bottom Floating Bar -->
     <div class="fixed bottom-0 left-0 right-0 z-40 bg-white/90 dark:bg-slate-900/90 backdrop-blur-md border-t border-slate-200 dark:border-slate-800 px-6 py-2 pb-safe sm:hidden flex justify-around items-center transition-colors">
-        <button onclick="window.scrollTo({top: 0, behavior: 'smooth'})" class="flex flex-col items-center text-slate-500 dark:text-slate-400 hover:text-emerald-500 dark:hover:text-emerald-400">
-            <i data-lucide="home" class="w-5 h-5"></i>
-            <span class="text-[10px] mt-0.5">Início</span>
+        <button onclick="switchView('finances')" id="mobileNavFinances" class="flex flex-col items-center text-emerald-500 dark:text-emerald-400 font-medium">
+            <i data-lucide="wallet" class="w-5 h-5"></i>
+            <span class="text-[10px] mt-0.5">Finanças</span>
         </button>
         
-        <!-- Big Floating Add Button -->
-        <button onclick="openModal()" class="-mt-6 p-3.5 bg-gradient-to-tr from-emerald-500 to-teal-400 text-slate-950 rounded-full shadow-lg shadow-emerald-500/30 active:scale-95 transition-transform">
+        <button onclick="handleFloatingAddButton()" class="-mt-6 p-3.5 bg-gradient-to-tr from-emerald-500 to-teal-400 text-slate-950 rounded-full shadow-lg shadow-emerald-500/30 active:scale-95 transition-transform">
             <i data-lucide="plus" class="w-6 h-6 font-bold"></i>
         </button>
 
-        <button onclick="exportToGoogleSheets()" class="flex flex-col items-center text-slate-500 dark:text-slate-400 hover:text-emerald-500 dark:hover:text-emerald-400">
-            <i data-lucide="download" class="w-5 h-5"></i>
-            <span class="text-[10px] mt-0.5">Exportar</span>
+        <button onclick="switchView('investments')" id="mobileNavInvestments" class="flex flex-col items-center text-slate-500 dark:text-slate-400 hover:text-emerald-500 dark:hover:text-emerald-400">
+            <i data-lucide="trending-up" class="w-5 h-5"></i>
+            <span class="text-[10px] mt-0.5">Investimentos</span>
         </button>
     </div>
 
-    <!-- Modal Form (Add / Edit) -->
+    <!-- Export Confirmation Modal -->
+    <div id="exportModal" class="fixed inset-0 z-50 flex items-center justify-center bg-slate-950/60 backdrop-blur-sm opacity-0 pointer-events-none transition-all duration-200">
+        <div class="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl w-full max-w-sm mx-4 p-5 space-y-4 shadow-2xl" id="exportModalCard">
+            <div class="flex items-center space-x-3 text-emerald-500">
+                <div class="p-2 bg-emerald-500/10 rounded-xl">
+                    <i data-lucide="download" class="w-6 h-6"></i>
+                </div>
+                <div>
+                    <h3 class="text-base font-bold text-slate-800 dark:text-slate-100">Exportar Relatório</h3>
+                    <p class="text-xs text-slate-500 dark:text-slate-400">Deseja baixar seus dados em CSV?</p>
+                </div>
+            </div>
+            
+            <p class="text-xs text-slate-600 dark:text-slate-300 leading-relaxed">
+                Esta ação gerará um arquivo CSV com suas finanças e carteira de investimentos.
+            </p>
+
+            <div class="pt-2 flex flex-col space-y-2">
+                <button type="button" onclick="confirmDownloadCSV()" class="w-full py-2.5 px-4 rounded-xl bg-emerald-500 hover:bg-emerald-600 text-slate-950 font-bold text-xs flex items-center justify-center space-x-2 shadow-md shadow-emerald-500/20 active:scale-95 transition-all">
+                    <i data-lucide="file-spreadsheet" class="w-4 h-4"></i>
+                    <span>Sim, Baixar CSV</span>
+                </button>
+                <button type="button" onclick="closeExportModal()" class="w-full py-2.5 px-4 rounded-xl border border-slate-300 dark:border-slate-700 text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800 text-xs font-medium transition-colors">
+                    Cancelar
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal Form (Transação - Finanças) -->
     <div id="transactionModal" class="fixed inset-0 z-50 flex items-end sm:items-center justify-center bg-slate-950/60 backdrop-blur-sm opacity-0 pointer-events-none transition-all duration-200">
         <div class="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 w-full sm:max-w-lg sm:rounded-2xl rounded-t-3xl max-h-[90vh] overflow-y-auto transform translate-y-full sm:translate-y-0 sm:scale-95 transition-transform duration-200" id="modalCard">
-            
             <div class="pt-3 pb-2 flex justify-center sm:hidden">
                 <div class="w-12 h-1 bg-slate-300 dark:bg-slate-700 rounded-full"></div>
             </div>
@@ -304,7 +420,6 @@
             <form id="transactionForm" class="p-6 space-y-4" onsubmit="handleFormSubmit(event)">
                 <input type="hidden" id="transactionId">
 
-                <!-- Type selector -->
                 <div>
                     <label class="block text-[11px] font-bold text-slate-500 dark:text-slate-400 uppercase tracking-wider mb-2">Tipo</label>
                     <div class="grid grid-cols-2 gap-2 p-1 bg-slate-100 dark:bg-slate-950 rounded-xl border border-slate-200 dark:border-slate-800">
@@ -320,14 +435,12 @@
                     <input type="hidden" id="txType" value="expense">
                 </div>
 
-                <!-- Description Input -->
                 <div>
                     <label for="txDescription" class="block text-[11px] font-bold text-slate-500 dark:text-slate-400 uppercase tracking-wider mb-1">Descrição</label>
                     <input type="text" id="txDescription" required placeholder="Ex: Mercado, Salário" 
                         class="w-full px-4 py-2.5 bg-slate-50 dark:bg-slate-950 border border-slate-300 dark:border-slate-800 rounded-xl text-sm text-slate-800 dark:text-slate-100 focus:outline-none focus:border-emerald-500">
                 </div>
 
-                <!-- Amount & Date -->
                 <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
                     <div>
                         <label for="txAmount" class="block text-[11px] font-bold text-slate-500 dark:text-slate-400 uppercase tracking-wider mb-1">Valor (R$)</label>
@@ -341,14 +454,12 @@
                     </div>
                 </div>
 
-                <!-- Category -->
                 <div>
                     <label for="txCategory" class="block text-[11px] font-bold text-slate-500 dark:text-slate-400 uppercase tracking-wider mb-1">Categoria</label>
                     <select id="txCategory" required class="w-full px-4 py-2.5 bg-slate-50 dark:bg-slate-950 border border-slate-300 dark:border-slate-800 rounded-xl text-sm text-slate-800 dark:text-slate-100 focus:outline-none focus:border-emerald-500">
                     </select>
                 </div>
 
-                <!-- Recurrence & Installments -->
                 <div id="recurrenceContainer" class="p-3 bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 rounded-xl space-y-2">
                     <span class="block text-[10px] font-bold text-slate-500 dark:text-slate-400 uppercase tracking-wider">Recorrência / Parcelas</span>
                     
@@ -380,7 +491,6 @@
                     </div>
                 </div>
 
-                <!-- Form Footer -->
                 <div class="pt-3 flex items-center justify-end space-x-2 border-t border-slate-200 dark:border-slate-800">
                     <button type="button" onclick="closeModal()" class="px-4 py-2 rounded-xl border border-slate-300 dark:border-slate-700 text-slate-600 dark:text-slate-400 text-xs font-medium">
                         Cancelar
@@ -393,14 +503,70 @@
         </div>
     </div>
 
+    <!-- Modal Form (Novo Ativo - Investimentos) -->
+    <div id="assetModal" class="fixed inset-0 z-50 flex items-end sm:items-center justify-center bg-slate-950/60 backdrop-blur-sm opacity-0 pointer-events-none transition-all duration-200">
+        <div class="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 w-full sm:max-w-md sm:rounded-2xl rounded-t-3xl p-6 space-y-4 transform translate-y-full sm:translate-y-0 sm:scale-95 transition-transform duration-200" id="assetModalCard">
+            <div class="flex justify-between items-center border-b border-slate-200 dark:border-slate-800 pb-3">
+                <h3 id="assetModalTitle" class="text-base font-bold text-slate-800 dark:text-slate-100">Cadastrar Novo Ativo</h3>
+                <button type="button" onclick="closeAssetModal()" class="p-1 rounded-lg text-slate-400 hover:text-slate-200">
+                    <i data-lucide="x" class="w-5 h-5"></i>
+                </button>
+            </div>
+
+            <form id="assetForm" class="space-y-4" onsubmit="handleAssetSubmit(event)">
+                <input type="hidden" id="assetId">
+
+                <div>
+                    <label class="block text-[11px] font-bold text-slate-500 dark:text-slate-400 uppercase tracking-wider mb-1">Nome do Ativo / Ticker</label>
+                    <input type="text" id="assetName" required placeholder="Ex: PETR4, MXRF11, Tesouro Selic" 
+                        class="w-full px-4 py-2.5 bg-slate-50 dark:bg-slate-950 border border-slate-300 dark:border-slate-800 rounded-xl text-sm text-slate-800 dark:text-slate-100 focus:outline-none focus:border-emerald-500">
+                </div>
+
+                <div>
+                    <label class="block text-[11px] font-bold text-slate-500 dark:text-slate-400 uppercase tracking-wider mb-1">Classe de Ativo</label>
+                    <select id="assetCategory" required class="w-full px-4 py-2.5 bg-slate-50 dark:bg-slate-950 border border-slate-300 dark:border-slate-800 rounded-xl text-sm text-slate-800 dark:text-slate-100 focus:outline-none focus:border-emerald-500">
+                        <option value="Renda Fixa">Renda Fixa (CDB, Tesouro, LCI/LCA)</option>
+                        <option value="Ações">Ações do Brasil</option>
+                        <option value="FIIs">Fundos Imobiliários (FIIs)</option>
+                        <option value="Internacional">Internacional (ETFs, Stocks, BDRs)</option>
+                        <option value="Criptomoedas">Criptomoedas (BTC, ETH, etc)</option>
+                        <option value="Outros">Outros Investments</option>
+                    </select>
+                </div>
+
+                <div class="grid grid-cols-2 gap-3">
+                    <div>
+                        <label class="block text-[11px] font-bold text-slate-500 dark:text-slate-400 uppercase tracking-wider mb-1">Quantidade / Unidades</label>
+                        <input type="number" step="any" id="assetQuantity" required placeholder="0.00" 
+                            class="w-full px-4 py-2.5 bg-slate-50 dark:bg-slate-950 border border-slate-300 dark:border-slate-800 rounded-xl text-sm text-slate-800 dark:text-slate-100 focus:outline-none focus:border-emerald-500">
+                    </div>
+                    <div>
+                        <label class="block text-[11px] font-bold text-slate-500 dark:text-slate-400 uppercase tracking-wider mb-1">Valor Unitário Atual (R$)</label>
+                        <input type="number" step="0.01" id="assetUnitPrice" required placeholder="0,00" 
+                            class="w-full px-4 py-2.5 bg-slate-50 dark:bg-slate-950 border border-slate-300 dark:border-slate-800 rounded-xl text-sm text-slate-800 dark:text-slate-100 focus:outline-none focus:border-emerald-500">
+                    </div>
+                </div>
+
+                <div class="pt-3 flex items-center justify-end space-x-2 border-t border-slate-200 dark:border-slate-800">
+                    <button type="button" onclick="closeAssetModal()" class="px-4 py-2 rounded-xl border border-slate-300 dark:border-slate-700 text-slate-600 dark:text-slate-400 text-xs font-medium">
+                        Cancelar
+                    </button>
+                    <button type="submit" class="px-5 py-2 rounded-xl bg-emerald-500 hover:bg-emerald-600 text-slate-950 text-xs font-bold shadow-md shadow-emerald-500/20">
+                        Salvar Ativo
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
     <!-- Delete Confirmation Modal -->
     <div id="deleteModal" class="fixed inset-0 z-50 flex items-center justify-center bg-slate-950/60 backdrop-blur-sm opacity-0 pointer-events-none transition-all duration-200">
         <div class="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl w-full max-w-xs mx-4 p-5 space-y-3" id="deleteModalCard">
             <div class="flex items-center space-x-2 text-rose-500">
                 <i data-lucide="alert-circle" class="w-5 h-5"></i>
-                <h3 class="text-sm font-bold text-slate-800 dark:text-slate-100">Excluir Transação</h3>
+                <h3 class="text-sm font-bold text-slate-800 dark:text-slate-100">Excluir Item</h3>
             </div>
-            <p class="text-xs text-slate-600 dark:text-slate-400">Tem certeza de que deseja remover esta transação?</p>
+            <p class="text-xs text-slate-600 dark:text-slate-400">Tem certeza de que deseja remover este item?</p>
             <div class="flex justify-end space-x-2 pt-2">
                 <button type="button" onclick="closeDeleteModal()" class="px-3 py-1.5 rounded-lg border border-slate-300 dark:border-slate-700 text-slate-600 dark:text-slate-400 text-xs">Cancelar</button>
                 <button type="button" id="confirmDeleteBtn" class="px-3 py-1.5 rounded-lg bg-rose-600 text-white text-xs font-bold">Excluir</button>
@@ -435,21 +601,27 @@
 
         let db, auth;
         let currentUser = null;
-        let unsubscribeSnapshot = null;
+        let unsubscribeTxSnapshot = null;
+        let unsubscribeAssetSnapshot = null;
 
-        // LOCAL & STATE DATA
+        // DATA STATE
         const EXPENSE_CATEGORIES = ['Alimentação', 'Moradia', 'Transporte', 'Saúde', 'Lazer', 'Educação', 'Contas & Serviços', 'Outros'];
-        const INCOME_CATEGORIES = ['Salário', 'Investimentos', 'Freelance', 'Vendas', 'Outras Receitas'];
+        const INCOME_CATEGORIES = ['Finanças / Salário', 'Investimentos', 'Freelance', 'Vendas', 'Outras Receitas'];
 
         let transactions = [];
+        let assets = [];
         let currentDate = new Date();
+        let currentView = 'finances'; // 'finances' or 'investments'
+        let currentInvSubtab = 'geral'; // 'geral' or 'ativos'
+
         let monthlyChartInstance = null;
         let categoryChartInstance = null;
+        let portfolioDoughnutInstance = null;
+
         let pendingDeleteId = null;
+        let pendingDeleteType = 'transaction'; // 'transaction' or 'asset'
 
-        // Theme Mode State (Default: Dark)
         let isDarkMode = localStorage.getItem('financontrol_theme') !== 'light';
-
         let syncUserId = localStorage.getItem('financontrol_custom_user_id');
 
         window.addEventListener('DOMContentLoaded', async () => {
@@ -475,8 +647,9 @@
 
                 subscribeToCloudData(activeId);
             } catch (err) {
-                console.warn('Firebase online sync backup enabled fallback:', err);
+                console.warn('Firebase sync offline fallback:', err);
                 transactions = JSON.parse(localStorage.getItem('financontrol_txs')) || getDemoTransactions();
+                assets = JSON.parse(localStorage.getItem('financontrol_assets')) || getDemoAssets();
                 updateUI();
             }
 
@@ -488,16 +661,79 @@
             document.getElementById('confirmDeleteBtn').addEventListener('click', executeDelete);
         });
 
-        // THEME TOGGLE LOGIC
-        function initTheme() {
-            applyTheme(isDarkMode);
-        }
+        // VIEW & TAB NAVIGATION
+        window.switchView = function(view) {
+            currentView = view;
+            const financesView = document.getElementById('financesView');
+            const investmentsView = document.getElementById('investmentsView');
+            const monthSelectorContainer = document.getElementById('monthSelectorContainer');
+
+            const btnFin = document.getElementById('navFinancesBtn');
+            const btnInv = document.getElementById('navInvestmentsBtn');
+            const mFin = document.getElementById('mobileNavFinances');
+            const mInv = document.getElementById('mobileNavInvestments');
+
+            if (view === 'finances') {
+                financesView.classList.remove('hidden');
+                investmentsView.classList.add('hidden');
+                monthSelectorContainer.classList.remove('hidden');
+
+                btnFin.className = "p-1.5 sm:px-3 sm:py-1 bg-emerald-500 text-slate-950 font-bold rounded-lg text-xs flex items-center space-x-1 shadow transition-all";
+                btnInv.className = "p-1.5 sm:px-3 sm:py-1 text-slate-600 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white font-semibold rounded-lg text-xs flex items-center space-x-1 transition-all";
+
+                mFin.className = "flex flex-col items-center text-emerald-500 dark:text-emerald-400 font-medium";
+                mInv.className = "flex flex-col items-center text-slate-500 dark:text-slate-400 hover:text-emerald-500 dark:hover:text-emerald-400";
+            } else {
+                financesView.classList.add('hidden');
+                investmentsView.classList.remove('hidden');
+                monthSelectorContainer.classList.add('hidden');
+
+                btnInv.className = "p-1.5 sm:px-3 sm:py-1 bg-emerald-500 text-slate-950 font-bold rounded-lg text-xs flex items-center space-x-1 shadow transition-all";
+                btnFin.className = "p-1.5 sm:px-3 sm:py-1 text-slate-600 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white font-semibold rounded-lg text-xs flex items-center space-x-1 transition-all";
+
+                mInv.className = "flex flex-col items-center text-emerald-500 dark:text-emerald-400 font-medium";
+                mFin.className = "flex flex-col items-center text-slate-500 dark:text-slate-400 hover:text-emerald-500 dark:hover:text-emerald-400";
+                
+                renderInvestmentsView();
+            }
+            lucide.createIcons();
+        };
+
+        window.setInvestmentSubtab = function(tab) {
+            currentInvSubtab = tab;
+            const tabGeral = document.getElementById('invTabGeral');
+            const tabAtivos = document.getElementById('invTabAtivos');
+            const contentGeral = document.getElementById('invContentGeral');
+            const contentAtivos = document.getElementById('invContentAtivos');
+
+            if (tab === 'geral') {
+                contentGeral.classList.remove('hidden');
+                contentAtivos.classList.add('hidden');
+                tabGeral.className = "pb-2 text-emerald-600 dark:text-emerald-400 border-b-2 border-emerald-500 transition-colors font-bold";
+                tabAtivos.className = "pb-2 text-slate-400 hover:text-slate-600 dark:hover:text-slate-300 border-b-2 border-transparent transition-colors";
+            } else {
+                contentGeral.classList.add('hidden');
+                contentAtivos.classList.remove('hidden');
+                tabAtivos.className = "pb-2 text-emerald-600 dark:text-emerald-400 border-b-2 border-emerald-500 transition-colors font-bold";
+                tabGeral.className = "pb-2 text-slate-400 hover:text-slate-600 dark:hover:text-slate-300 border-b-2 border-transparent transition-colors";
+            }
+            renderInvestmentsView();
+        };
+
+        window.handleFloatingAddButton = function() {
+            if (currentView === 'finances') openModal();
+            else openAssetModal();
+        };
+
+        // THEME TOGGLE
+        function initTheme() { applyTheme(isDarkMode); }
 
         window.toggleTheme = function() {
             isDarkMode = !isDarkMode;
             localStorage.setItem('financontrol_theme', isDarkMode ? 'dark' : 'light');
             applyTheme(isDarkMode);
             renderCharts();
+            renderInvestmentsView();
         };
 
         function applyTheme(dark) {
@@ -508,11 +744,9 @@
 
             if (dark) {
                 html.classList.add('dark');
-                if (toggleBtn) {
-                    toggleBtn.className = "theme-toggle-btn bg-slate-800 border border-slate-700";
-                }
+                if (toggleBtn) toggleBtn.className = "theme-toggle-btn bg-slate-800 border border-slate-700";
                 if (thumb) {
-                    thumb.style.transform = 'translateX(28px)';
+                    thumb.style.transform = 'translateX(24px)';
                     thumb.className = "theme-toggle-thumb bg-slate-900 text-indigo-300";
                 }
                 if (icon) {
@@ -521,9 +755,7 @@
                 }
             } else {
                 html.classList.remove('dark');
-                if (toggleBtn) {
-                    toggleBtn.className = "theme-toggle-btn bg-amber-100 border border-amber-200";
-                }
+                if (toggleBtn) toggleBtn.className = "theme-toggle-btn bg-amber-100 border border-amber-200";
                 if (thumb) {
                     thumb.style.transform = 'translateX(0px)';
                     thumb.className = "theme-toggle-thumb bg-white text-amber-500";
@@ -536,36 +768,48 @@
             lucide.createIcons();
         }
 
+        // CLOUD SYNC & FIRESTORE
         function subscribeToCloudData(targetUserId) {
             if (!db || !currentUser) return;
-            if (unsubscribeSnapshot) unsubscribeSnapshot();
+            if (unsubscribeTxSnapshot) unsubscribeTxSnapshot();
+            if (unsubscribeAssetSnapshot) unsubscribeAssetSnapshot();
 
-            const colRef = collection(db, 'artifacts', appId, 'users', targetUserId, 'transactions');
-            
-            unsubscribeSnapshot = onSnapshot(colRef, (snapshot) => {
+            // Transactions Stream
+            const txsColRef = collection(db, 'artifacts', appId, 'users', targetUserId, 'transactions');
+            unsubscribeTxSnapshot = onSnapshot(txsColRef, (snapshot) => {
                 const cloudTxs = [];
                 snapshot.forEach(doc => cloudTxs.push({ id: doc.id, ...doc.data() }));
-                
-                if (cloudTxs.length > 0) {
-                    transactions = cloudTxs;
-                } else if (transactions.length === 0) {
-                    transactions = getDemoTransactions();
-                }
-
+                transactions = cloudTxs.length > 0 ? cloudTxs : (transactions.length > 0 ? transactions : getDemoTransactions());
                 saveToLocalStorage();
                 updateUI();
-            }, (error) => {
-                console.error("Cloud snapshot error:", error);
-                transactions = JSON.parse(localStorage.getItem('financontrol_txs')) || getDemoTransactions();
+            });
+
+            // Assets Stream
+            const assetsColRef = collection(db, 'artifacts', appId, 'users', targetUserId, 'assets');
+            unsubscribeAssetSnapshot = onSnapshot(assetsColRef, (snapshot) => {
+                const cloudAssets = [];
+                snapshot.forEach(doc => cloudAssets.push({ id: doc.id, ...doc.data() }));
+                assets = cloudAssets.length > 0 ? cloudAssets : (assets.length > 0 ? assets : getDemoAssets());
+                saveToLocalStorage();
                 updateUI();
             });
         }
 
         function getDemoTransactions() {
             return [
-                { id: '1', description: 'Salário Mensal', amount: 4800.00, category: 'Salário', type: 'income', date: getRelativeDate(0, 1), isFixed: true },
-                { id: '2', description: 'Supermercado', amount: 420.00, category: 'Alimentação', type: 'expense', date: getRelativeDate(0, 4) },
-                { id: '3', description: 'Internet Fibra', amount: 120.00, category: 'Contas & Serviços', type: 'expense', date: getRelativeDate(0, 10), isFixed: true }
+                { id: '1', description: 'Salário Mensal', amount: 5500.00, category: 'Finanças / Salário', type: 'income', date: getRelativeDate(0, 1), isFixed: true },
+                { id: '2', description: 'Dividendos FIIs', amount: 310.00, category: 'Investimentos', type: 'income', date: getRelativeDate(0, 5) },
+                { id: '3', description: 'Supermercado', amount: 620.00, category: 'Alimentação', type: 'expense', date: getRelativeDate(0, 6) },
+                { id: '4', description: 'Internet Fibra', amount: 130.00, category: 'Contas & Serviços', type: 'expense', date: getRelativeDate(0, 10), isFixed: true }
+            ];
+        }
+
+        function getDemoAssets() {
+            return [
+                { id: 'ast_1', name: 'Tesouro Selic 2029', category: 'Renda Fixa', quantity: 1, unitPrice: 14500.00 },
+                { id: 'ast_2', name: 'MXRF11', category: 'FIIs', quantity: 150, unitPrice: 10.45 },
+                { id: 'ast_3', name: 'PETR4', category: 'Ações', quantity: 100, unitPrice: 38.20 },
+                { id: 'ast_4', name: 'IVVB11', category: 'Internacional', quantity: 20, unitPrice: 310.50 }
             ];
         }
 
@@ -580,38 +824,39 @@
 
         function saveToLocalStorage() {
             localStorage.setItem('financontrol_txs', JSON.stringify(transactions));
+            localStorage.setItem('financontrol_assets', JSON.stringify(assets));
         }
 
-        async function syncDocToCloud(tx) {
+        async function syncDocToCloud(collectionName, item) {
             saveToLocalStorage();
             const activeId = syncUserId || currentUser?.uid;
             if (db && currentUser && activeId) {
                 try {
-                    const docRef = doc(db, 'artifacts', appId, 'users', activeId, 'transactions', tx.id);
-                    await setDoc(docRef, tx);
-                } catch (e) { console.error("Cloud save failed:", e); }
+                    const docRef = doc(db, 'artifacts', appId, 'users', activeId, collectionName, item.id);
+                    await setDoc(docRef, item);
+                } catch (e) { console.error("Cloud save error:", e); }
             }
         }
 
-        async function deleteDocFromCloud(id) {
+        async function deleteDocFromCloud(collectionName, id) {
             saveToLocalStorage();
             const activeId = syncUserId || currentUser?.uid;
             if (db && currentUser && activeId) {
                 try {
-                    const docRef = doc(db, 'artifacts', appId, 'users', activeId, 'transactions', id);
+                    const docRef = doc(db, 'artifacts', appId, 'users', activeId, collectionName, id);
                     await deleteDoc(docRef);
-                } catch (e) { console.error("Cloud delete failed:", e); }
+                } catch (e) { console.error("Cloud delete error:", e); }
             }
         }
 
         window.copyUserId = function() {
             const activeId = syncUserId || currentUser?.uid || '';
             navigator.clipboard.writeText(activeId);
-            showToast('Chave de sincronização copiada!');
+            showToast('Chave copiada para a área de transferência!');
         };
 
         window.promptCustomUserId = function() {
-            const newId = prompt("Cole a chave do seu outro dispositivo (Celular ou PC) para sincronizar:", syncUserId || '');
+            const newId = prompt("Cole a chave do seu outro dispositivo para sincronizar:", syncUserId || '');
             if (newId !== null) {
                 if (newId.trim() === '') {
                     localStorage.removeItem('financontrol_custom_user_id');
@@ -623,7 +868,7 @@
                 const activeId = syncUserId || currentUser?.uid;
                 document.getElementById('displayUserId').textContent = activeId;
                 subscribeToCloudData(activeId);
-                showToast('Dispositivo pareado!');
+                showToast('Dispositivo sincronizado!');
             }
         };
 
@@ -642,6 +887,9 @@
             renderKPIs();
             renderTransactionsList();
             renderCharts();
+            if (currentView === 'investments') {
+                renderInvestmentsView();
+            }
             lucide.createIcons();
         }
 
@@ -681,6 +929,14 @@
             });
         }
 
+        function getCategoryIcon(tx) {
+            if (tx.type === 'income') {
+                if (tx.category === 'Investimentos') return 'dollar-sign';
+                return 'wallet';
+            }
+            return 'arrow-down-right';
+        }
+
         function renderTransactionsList() {
             const container = document.getElementById('transactionList');
             const emptyState = document.getElementById('emptyState');
@@ -708,6 +964,7 @@
 
             filtered.forEach(tx => {
                 const isIncome = tx.type === 'income';
+                const iconName = getCategoryIcon(tx);
                 const amountFormatted = `${isIncome ? '+' : '-'} ${formatCurrency(tx.amount)}`;
                 const amountClass = isIncome ? 'text-emerald-600 dark:text-emerald-400 font-bold' : 'text-slate-800 dark:text-slate-200 font-bold';
 
@@ -720,7 +977,7 @@
                 item.innerHTML = `
                     <div class="flex items-center space-x-3">
                         <div class="p-2.5 rounded-xl ${isIncome ? 'bg-emerald-50 dark:bg-emerald-500/10 text-emerald-600 dark:text-emerald-400' : 'bg-rose-50 dark:bg-rose-500/10 text-rose-600 dark:text-rose-400'}">
-                            <i data-lucide="${isIncome ? 'arrow-up-right' : 'arrow-down-right'}" class="w-4 h-4"></i>
+                            <i data-lucide="${iconName}" class="w-4 h-4"></i>
                         </div>
                         <div>
                             <div class="flex items-center space-x-1.5">
@@ -740,7 +997,7 @@
                             <button type="button" onclick="editTransaction('${tx.id}')" class="p-1 text-slate-400 hover:text-emerald-600 dark:hover:text-emerald-400">
                                 <i data-lucide="pencil" class="w-3.5 h-3.5"></i>
                             </button>
-                            <button type="button" onclick="openDeleteModal('${tx.id}')" class="p-1 text-slate-400 hover:text-rose-600 dark:hover:text-rose-400">
+                            <button type="button" onclick="openDeleteModal('transaction', '${tx.id}')" class="p-1 text-slate-400 hover:text-rose-600 dark:hover:text-rose-400">
                                 <i data-lucide="trash-2" class="w-3.5 h-3.5"></i>
                             </button>
                         </div>
@@ -820,6 +1077,147 @@
             });
         }
 
+        // RENDER INVESTMENTS LOGIC & CHARTS
+        function renderInvestmentsView() {
+            let totalPatrimony = 0;
+            const categoryTotals = {};
+            const categoryColors = {
+                'Renda Fixa': '#22c55e',
+                'Ações': '#3b82f6',
+                'FIIs': '#eab308',
+                'Internacional': '#a855f7',
+                'Criptomoedas': '#f97316',
+                'Outros': '#64748b'
+            };
+
+            assets.forEach(ast => {
+                const totalValue = (parseFloat(ast.quantity) || 0) * (parseFloat(ast.unitPrice) || 0);
+                totalPatrimony += totalValue;
+                categoryTotals[ast.category] = (categoryTotals[ast.category] || 0) + totalValue;
+            });
+
+            document.getElementById('invTotalPatrimony').textContent = formatCurrency(totalPatrimony);
+            document.getElementById('invTotalCount').textContent = String(assets.length).padStart(2, '0');
+
+            const uniqueClasses = Object.keys(categoryTotals).length;
+            document.getElementById('invTotalClasses').textContent = String(uniqueClasses).padStart(2, '0');
+
+            let maxPosPct = 0;
+            if (totalPatrimony > 0) {
+                assets.forEach(ast => {
+                    const val = ast.quantity * ast.unitPrice;
+                    const pct = (val / totalPatrimony) * 100;
+                    if (pct > maxPosPct) maxPosPct = pct;
+                });
+            }
+            document.getElementById('invTopPosition').textContent = `${maxPosPct.toFixed(1).replace('.', ',')}%`;
+
+            // Portfolio Allocation Doughnut Chart
+            const labels = Object.keys(categoryTotals);
+            const dataValues = Object.values(categoryTotals);
+            const chartColors = labels.map(l => categoryColors[l] || '#64748b');
+
+            const ctxDoughnut = document.getElementById('portfolioDoughnutChart').getContext('2d');
+            if (portfolioDoughnutInstance) portfolioDoughnutInstance.destroy();
+
+            portfolioDoughnutInstance = new Chart(ctxDoughnut, {
+                type: 'doughnut',
+                data: {
+                    labels: labels,
+                    datasets: [{
+                        data: dataValues,
+                        backgroundColor: chartColors,
+                        borderWidth: 0
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: { legend: { display: false } },
+                    cutout: '75%'
+                }
+            });
+
+            // Legend Breakdown
+            const legendList = document.getElementById('portfolioLegendList');
+            legendList.innerHTML = '';
+
+            labels.forEach((cat, idx) => {
+                const val = categoryTotals[cat];
+                const pct = totalPatrimony > 0 ? ((val / totalPatrimony) * 100).toFixed(1) : '0,0';
+                const color = chartColors[idx];
+
+                const item = document.createElement('div');
+                item.className = "flex items-center justify-between text-xs";
+                item.innerHTML = `
+                    <div class="flex items-center space-x-2">
+                        <span class="w-3 h-3 rounded-full inline-block" style="background-color: ${color}"></span>
+                        <span class="font-medium text-slate-700 dark:text-slate-300">${escapeHtml(cat)}</span>
+                    </div>
+                    <div class="flex items-center space-x-3">
+                        <span class="font-bold text-slate-800 dark:text-slate-100">${formatCurrency(val)}</span>
+                        <span class="text-slate-400 font-mono text-[11px] min-w-[40px] text-right">${pct}%</span>
+                    </div>
+                `;
+                legendList.appendChild(item);
+            });
+
+            // Assets List Render
+            const assetsContainer = document.getElementById('assetsListContainer');
+            assetsContainer.innerHTML = '';
+
+            if (assets.length === 0) {
+                assetsContainer.innerHTML = `
+                    <div class="py-8 text-center text-xs text-slate-400">
+                        Nenhum ativo cadastrado. Clique no botão acima para adicionar.
+                    </div>
+                `;
+                return;
+            }
+
+            assets.forEach(ast => {
+                const totalValue = ast.quantity * ast.unitPrice;
+                const sharePct = totalPatrimony > 0 ? ((totalValue / totalPatrimony) * 100).toFixed(1) : '0,0';
+
+                const item = document.createElement('div');
+                item.className = "py-3 flex items-center justify-between text-xs hover:bg-slate-50 dark:hover:bg-slate-800/40 px-2 rounded-xl transition-colors";
+                item.innerHTML = `
+                    <div class="flex items-center space-x-3">
+                        <div class="p-2 rounded-xl bg-slate-100 dark:bg-slate-800 text-emerald-500">
+                            <i data-lucide="line-chart" class="w-4 h-4"></i>
+                        </div>
+                        <div>
+                            <div class="flex items-center space-x-2">
+                                <span class="font-bold text-slate-900 dark:text-slate-100">${escapeHtml(ast.name)}</span>
+                                <span class="text-[10px] px-1.5 py-0.5 rounded bg-slate-100 dark:bg-slate-800 text-slate-500 font-medium">${escapeHtml(ast.category)}</span>
+                            </div>
+                            <div class="text-[11px] text-slate-500 dark:text-slate-400 mt-0.5">
+                                ${ast.quantity} un. × ${formatCurrency(ast.unitPrice)}
+                            </div>
+                        </div>
+                    </div>
+                    <div class="flex items-center space-x-3">
+                        <div class="text-right">
+                            <div class="font-bold text-slate-900 dark:text-slate-100">${formatCurrency(totalValue)}</div>
+                            <div class="text-[10px] text-slate-400 font-mono">${sharePct}% da carteira</div>
+                        </div>
+                        <div class="flex items-center space-x-1">
+                            <button onclick="openAssetModal('${ast.id}')" class="p-1 text-slate-400 hover:text-emerald-500">
+                                <i data-lucide="pencil" class="w-3.5 h-3.5"></i>
+                            </button>
+                            <button onclick="openDeleteModal('asset', '${ast.id}')" class="p-1 text-slate-400 hover:text-rose-500">
+                                <i data-lucide="trash-2" class="w-3.5 h-3.5"></i>
+                            </button>
+                        </div>
+                    </div>
+                `;
+                assetsContainer.appendChild(item);
+            });
+
+            lucide.createIcons();
+        }
+
+        // TRANSACTION MODAL LOGIC
         window.toggleRecurrenceFields = function(mode) {
             const wrapper = document.getElementById('installmentsWrapper');
             if (mode === 'installments') wrapper.classList.remove('hidden');
@@ -907,7 +1305,7 @@
                 if (index !== -1) {
                     const updatedTx = { ...transactions[index], description, amount, date: dateStr, type, category };
                     transactions[index] = updatedTx;
-                    syncDocToCloud(updatedTx);
+                    syncDocToCloud('transactions', updatedTx);
                     showToast('Atualizado com sucesso!');
                 }
             } else {
@@ -934,7 +1332,7 @@
                             installmentInfo: `${i + 1}/${count}`
                         };
                         transactions.push(newTx);
-                        syncDocToCloud(newTx);
+                        syncDocToCloud('transactions', newTx);
                     }
                     showToast(`${count} parcelas criadas!`);
                 } else {
@@ -944,7 +1342,7 @@
                         isFixed: recurrenceType === 'fixed'
                     };
                     transactions.push(newTx);
-                    syncDocToCloud(newTx);
+                    syncDocToCloud('transactions', newTx);
                     showToast('Lançamento salvo!');
                 }
             }
@@ -955,7 +1353,77 @@
 
         window.editTransaction = function(id) { openModal(id); };
 
-        window.openDeleteModal = function(id) {
+        // ASSET MODAL LOGIC (INVESTMENTS)
+        window.openAssetModal = function(assetId = null) {
+            const modal = document.getElementById('assetModal');
+            const modalCard = document.getElementById('assetModalCard');
+            const form = document.getElementById('assetForm');
+
+            form.reset();
+            document.getElementById('assetId').value = '';
+
+            if (assetId) {
+                const ast = assets.find(a => a.id === assetId);
+                if (ast) {
+                    document.getElementById('assetModalTitle').textContent = 'Editar Ativo';
+                    document.getElementById('assetId').value = ast.id;
+                    document.getElementById('assetName').value = ast.name;
+                    document.getElementById('assetCategory').value = ast.category;
+                    document.getElementById('assetQuantity').value = ast.quantity;
+                    document.getElementById('assetUnitPrice').value = ast.unitPrice;
+                }
+            } else {
+                document.getElementById('assetModalTitle').textContent = 'Cadastrar Novo Ativo';
+            }
+
+            modal.classList.remove('opacity-0', 'pointer-events-none');
+            modalCard.classList.remove('translate-y-full', 'sm:scale-95');
+            modalCard.classList.add('translate-y-0', 'sm:scale-100');
+        };
+
+        window.closeAssetModal = function() {
+            const modal = document.getElementById('assetModal');
+            const modalCard = document.getElementById('assetModalCard');
+
+            modalCard.classList.remove('translate-y-0', 'sm:scale-100');
+            modalCard.classList.add('translate-y-full', 'sm:scale-95');
+            modal.classList.add('opacity-0', 'pointer-events-none');
+        };
+
+        window.handleAssetSubmit = function(e) {
+            e.preventDefault();
+
+            const id = document.getElementById('assetId').value;
+            const name = document.getElementById('assetName').value.trim();
+            const category = document.getElementById('assetCategory').value;
+            const quantity = parseFloat(document.getElementById('assetQuantity').value);
+            const unitPrice = parseFloat(document.getElementById('assetUnitPrice').value);
+
+            if (id) {
+                const index = assets.findIndex(a => a.id === id);
+                if (index !== -1) {
+                    const updatedAsset = { ...assets[index], name, category, quantity, unitPrice };
+                    assets[index] = updatedAsset;
+                    syncDocToCloud('assets', updatedAsset);
+                    showToast('Ativo atualizado!');
+                }
+            } else {
+                const newAsset = {
+                    id: 'ast_' + Date.now().toString(),
+                    name, category, quantity, unitPrice
+                };
+                assets.push(newAsset);
+                syncDocToCloud('assets', newAsset);
+                showToast('Ativo cadastrado!');
+            }
+
+            closeAssetModal();
+            renderInvestmentsView();
+        };
+
+        // DELETE MODAL (SHARED)
+        window.openDeleteModal = function(type, id) {
+            pendingDeleteType = type;
             pendingDeleteId = id;
             const modal = document.getElementById('deleteModal');
             const modalCard = document.getElementById('deleteModalCard');
@@ -976,16 +1444,41 @@
         function executeDelete() {
             if (pendingDeleteId) {
                 const targetId = pendingDeleteId;
-                transactions = transactions.filter(t => t.id !== targetId);
-                deleteDocFromCloud(targetId);
+                if (pendingDeleteType === 'transaction') {
+                    transactions = transactions.filter(t => t.id !== targetId);
+                    deleteDocFromCloud('transactions', targetId);
+                    showToast('Transação removida!');
+                } else {
+                    assets = assets.filter(a => a.id !== targetId);
+                    deleteDocFromCloud('assets', targetId);
+                    showToast('Ativo removido!');
+                }
                 closeDeleteModal();
                 updateUI();
-                showToast('Removido com sucesso!');
             }
         }
 
-        window.exportToGoogleSheets = function() {
-            let csvContent = "\uFEFFData;Descrição;Categoria;Tipo;Valor (R$)\n";
+        // EXPORT MODAL LOGIC
+        window.promptExportConfirmation = function() {
+            const modal = document.getElementById('exportModal');
+            const modalCard = document.getElementById('exportModalCard');
+            modal.classList.remove('opacity-0', 'pointer-events-none');
+            modalCard.classList.remove('scale-95');
+            modalCard.classList.add('scale-100');
+        };
+
+        window.closeExportModal = function() {
+            const modal = document.getElementById('exportModal');
+            const modalCard = document.getElementById('exportModalCard');
+            modalCard.classList.remove('scale-100');
+            modalCard.classList.add('scale-95');
+            modal.classList.add('opacity-0', 'pointer-events-none');
+        };
+
+        window.confirmDownloadCSV = function() {
+            closeExportModal();
+
+            let csvContent = "\uFEFF--- TRANSAÇÕES FINANANCEIRAS ---\nData;Descrição;Categoria;Tipo;Valor (R$)\n";
             transactions.forEach(tx => {
                 const formattedDate = formatDate(tx.date);
                 const typeText = tx.type === 'income' ? 'Receita' : 'Despesa';
@@ -993,28 +1486,36 @@
                 csvContent += `${formattedDate};"${tx.description}";"${tx.category}";${typeText};${formattedAmount}\n`;
             });
 
+            csvContent += "\n--- CARTEIRA DE INVESTIMENTOS ---\nAtivo;Classe;Quantidade;Valor Unitario (R$);Total Investido (R$)\n";
+            assets.forEach(ast => {
+                const total = ast.quantity * ast.unitPrice;
+                csvContent += `"${ast.name}";"${ast.category}";${ast.quantity};${ast.unitPrice.toFixed(2).replace('.', ',')};${total.toFixed(2).replace('.', ',')}\n`;
+            });
+
             const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
             const url = URL.createObjectURL(blob);
             const link = document.createElement('a');
             link.href = url;
-            link.download = `FinanControl_${new Date().toISOString().slice(0, 10)}.csv`;
+            link.download = `FinanControl_Relatorio_${new Date().toISOString().slice(0, 10)}.csv`;
             document.body.appendChild(link);
             link.click();
             document.body.removeChild(link);
-            showToast('Relatório baixado!');
+            showToast('Relatório baixado com sucesso!');
         };
 
         function formatCurrency(val) {
-            return new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' }).format(val);
+            return new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' }).format(val || 0);
         }
 
         function formatDate(dStr) {
+            if (!dStr) return '';
             const [y, m, d] = dStr.split('-');
             return `${d}/${m}/${y}`;
         }
 
         function escapeHtml(text) {
-            return text.replace(/[&<>"']/g, function(m) {
+            if (!text) return '';
+            return String(text).replace(/[&<>"']/g, function(m) {
                 return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#039;' }[m];
             });
         }
